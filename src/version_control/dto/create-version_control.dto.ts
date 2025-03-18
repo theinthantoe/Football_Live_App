@@ -3,6 +3,7 @@ import {
   IsString,
   IsOptional,
   ValidateNested,
+  IsNumber,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -13,7 +14,15 @@ class IOSDto {
 
   @IsNotEmpty()
   @IsString()
+  slogan: string;
+
+  @IsNotEmpty()
+  @IsString()
   version: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  buildNumber: number;
 
   @IsNotEmpty()
   @IsString()
@@ -27,7 +36,15 @@ class AndroidDto {
 
   @IsNotEmpty()
   @IsString()
+  slogan: string;
+
+  @IsNotEmpty()
+  @IsString()
   version: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  buildNumber: number;
 
   @IsNotEmpty()
   @IsString()

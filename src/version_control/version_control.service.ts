@@ -11,9 +11,11 @@ export class VersionControlService {
     try {
       const createdData = await this.databaseService.versionControl.create({
         data: {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           ios: createVersionControlDto.ios
             ? JSON.parse(JSON.stringify(createVersionControlDto.ios))
             : undefined,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           android: createVersionControlDto.android
             ? JSON.parse(JSON.stringify(createVersionControlDto.android))
             : undefined,
@@ -25,6 +27,7 @@ export class VersionControlService {
         message: Messages.created,
         data: createdData,
       };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       throw new HttpException(
         'Error creating version control',
@@ -63,9 +66,11 @@ export class VersionControlService {
       const updatedData = await this.databaseService.versionControl.update({
         where: { id },
         data: {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           ios: updateData.ios
             ? JSON.parse(JSON.stringify(updateData.ios))
             : undefined,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           android: updateData.android
             ? JSON.parse(JSON.stringify(updateData.android))
             : undefined,
@@ -77,8 +82,12 @@ export class VersionControlService {
         message: Messages.updated,
         data: updatedData,
       };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Error creating version control',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -90,6 +99,7 @@ export class VersionControlService {
         message: Messages.deleted,
         data: null,
       };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       throw new HttpException(
         'Error deleting version control',

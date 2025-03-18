@@ -19,4 +19,14 @@ model VersionControl {
   android Json
 }
 
+model  Membership {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  slogan String
+  telegram Json
+  viber Json
+  messenger Json
+  facebook Json
+}
+
 

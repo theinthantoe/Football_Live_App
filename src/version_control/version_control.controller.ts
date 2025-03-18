@@ -12,7 +12,7 @@ import { CreateVersionControlDto } from './dto/create-version_control.dto';
 
 @Controller('version-control')
 export class VersionControlController {
-  constructor(private readonly versionControlService: VersionControlService) {}
+  constructor(private versionControlService: VersionControlService) {}
 
   @Post()
   create(@Body() createVersionControlDto: CreateVersionControlDto) {
