@@ -28,5 +28,9 @@ model  Membership {
   messenger Json
   facebook Json
 }
+model  SplashBanner {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  image String
+}
 
 
