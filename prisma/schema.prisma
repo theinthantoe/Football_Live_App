@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,24 +7,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model VersionControl {
-  id  String @id @default(auto()) @map("_id") @db.ObjectId
-  ios Json
-  android Json
+type MembershipFacebook {
+  icon String
+  link String
 }
 
-model  Membership {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  title String
-  slogan String
-  telegram Json
-  viber Json
-  messenger Json
-  facebook Json
+type MembershipMessenger {
+  icon String
+  link String
 }
-model  SplashBanner {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+type MembershipTelegram {
+  icon String
+  link String
+}
+
+type MembershipViber {
+  icon String
+  link String
+}
+
+type VersionControlAndroid {
+  buildNumber   Int
+  playStoreLink String
+  slogan        String
+  title         String
+  version       String
+}
+
+type VersionControlIos {
+  appStoreLink String
+  buildNumber  Int
+  slogan       String
+  title        String
+  version      String
+}
+
+model Membership {
+  id        String              @id @default(auto()) @map("_id") @db.ObjectId
+  facebook  MembershipFacebook
+  messenger MembershipMessenger
+  slogan    String
+  telegram  MembershipTelegram
+  title     String
+  viber     MembershipViber
+}
+
+model SplashBanner {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
   image String
 }
 
-
+model VersionControl {
+  id      String                @id @default(auto()) @map("_id") @db.ObjectId
+  android VersionControlAndroid
+  ios     VersionControlIos
+}

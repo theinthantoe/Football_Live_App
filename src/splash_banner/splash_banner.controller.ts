@@ -27,7 +27,7 @@ export class SplashBannerController {
     return this.splashBannerService.getBanners();
   }
   @Get(':id')
-  findOne(@Param() id: string) {
+  findOne(@Param('id') id: string) {
     return this.splashBannerService.getBanner(id);
   }
   @Patch('update/:id')
@@ -40,7 +40,7 @@ export class SplashBannerController {
     return this.splashBannerService.updateBanner(id, file);
   }
   @Delete(':id')
-  remove(@Param() id: string) {
+  remove(@Param('id') id: string) {
     return this.splashBannerService.deleteBanner(id);
   }
 }
