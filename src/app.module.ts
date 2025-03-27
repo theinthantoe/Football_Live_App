@@ -4,6 +4,7 @@ import { DatabaseModule } from './database/database.module';
 import { VersionControlModule } from './version_control/version_control.module';
 import { MembershipModule } from 'src/membersip/membership.module';
 import { SplashBannerModule } from './splash_banner/splash_banner.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { SplashBannerModule } from './splash_banner/splash_banner.module';
     VersionControlModule,
     MembershipModule,
     SplashBannerModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
