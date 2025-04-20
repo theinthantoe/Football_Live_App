@@ -65,7 +65,7 @@ export class MembershipService {
 
     return {
       status: HttpStatus.CREATED,
-      message: 'Membership created successfully.',
+      message: Messages.created,
       data: membership,
     };
   }
@@ -134,7 +134,7 @@ export class MembershipService {
 
     return {
       status: HttpStatus.OK,
-      message: 'Membership updated successfully.',
+      message: Messages.updated,
       data: membership,
     };
   }

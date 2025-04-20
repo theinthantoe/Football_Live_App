@@ -14,22 +14,22 @@ import { CreateVersionControlDto } from './dto/create-version_control.dto';
 export class VersionControlController {
   constructor(private versionControlService: VersionControlService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createVersionControlDto: CreateVersionControlDto) {
     return this.versionControlService.create(createVersionControlDto);
   }
 
-  @Get()
+  @Get('list')
   findAll() {
     return this.versionControlService.findAll();
   }
 
-  @Get(':id')
+  @Get('get/:id')
   findOne(@Param('id') id: string) {
     return this.versionControlService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   update(
     @Param('id') id: string,
     @Body() updateVersionControlDto: Partial<CreateVersionControlDto>,
@@ -37,7 +37,7 @@ export class VersionControlController {
     return this.versionControlService.update(id, updateVersionControlDto);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.versionControlService.remove(id);
   }

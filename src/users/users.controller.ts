@@ -14,23 +14,23 @@ import { UpdateUserDto } from 'src/users/dto/UpdateUser.dto';
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
-  @Get()
+  @Get('list')
   findAll() {
     return this.usersService.find();
   }
-  @Get(':id')
+  @Get('get/:id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
-  @Post()
+  @Post('create')
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
-  @Patch(':id')
+  @Patch('update/:id')
   update(@Param('id') id: string, @Body() userUpdateDto: UpdateUserDto) {
     return this.usersService.update(id, userUpdateDto);
   }
-  @Delete(':id')
+  @Delete('delete/:id')
   delete(@Param('id') id: string) {
     return this.usersService.delete(id);
   }

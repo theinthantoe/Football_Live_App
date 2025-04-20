@@ -17,13 +17,18 @@ export class AdminService {
     });
     return {
       status: HttpStatus.CREATED,
-      message: 'Admin created',
+      message: Messages.created,
       data: admin,
     };
   }
 
   async findAll() {
-    return this.db.admin.findMany();
+    const data = await this.db.admin.findMany();
+    return {
+      status: HttpStatus.OK,
+      message: Messages.getAll,
+      data,
+    };
   }
 
   async findByemail(email: string) {
@@ -47,7 +52,12 @@ export class AdminService {
   }
 
   async findOne(id: string) {
-    return this.db.admin.findUnique({ where: { id } });
+    const data = await this.db.admin.findUnique({ where: { id } });
+    return {
+      status: HttpStatus.OK,
+      message: Messages.getOne,
+      data,
+    };
   }
 
   async update(id: string, dto: UpdateAdminDto) {

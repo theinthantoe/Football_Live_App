@@ -17,7 +17,7 @@ import { UpdateMemberDto } from 'src/membersip/dto/UpdateMember.dto';
 export class MembershipController {
   constructor(private readonly membershipService: MembershipService) {}
 
-  @Post()
+  @Post('create')
   @UseInterceptors(AnyFilesInterceptor())
   create(
     @Body() dto: CreateMemberDto,
@@ -25,11 +25,11 @@ export class MembershipController {
   ) {
     return this.membershipService.createMembership(dto, files);
   }
-  @Get()
+  @Get('list')
   findMany(){
     return this.membershipService.findMany();
   }
-  @Patch(':id')
+  @Patch('update/:id')
   update(
     @Body() dto: UpdateMemberDto,
     @Param('id') id: string,
@@ -37,7 +37,7 @@ export class MembershipController {
   ) {
     return this.membershipService.updateMembership(id, dto, files);
   }
-  @Delete(':id')
+  @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.membershipService.deleteMembership(id);
   }

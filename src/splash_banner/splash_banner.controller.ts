@@ -23,7 +23,7 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 export class SplashBannerController {
   constructor(private readonly splashBannerService: SplashBannerService) {}
 
-  @Post()
+  @Post('create')
   @UseInterceptors(FilesInterceptor('images')) // handle multiple or single depending on type
   async createBanner(
     @Body() createSplashBannerDto: CreateSplashBannerDto,
@@ -62,7 +62,7 @@ export class SplashBannerController {
     return this.splashBannerService.createBanner(createSplashBannerDto);
   }
 
-  @Get()
+  @Get('list')
   getBanners(@Query('type') type?: string) {
     return this.splashBannerService.getBanners(type);
   }
@@ -72,7 +72,7 @@ export class SplashBannerController {
   //   return this.splashBannerService.getBanner(id);
   // }
 
-  @Patch(':id')
+  @Patch('update/:id')
   @UseInterceptors(FileInterceptor('image'))
   updateBanner(
     @Param('id') id: string,
@@ -93,7 +93,7 @@ export class SplashBannerController {
     return this.splashBannerService.updateBanner(id, createSplashBannerDto);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   deleteBanner(@Param('id') id: string) {
     return this.splashBannerService.deleteBanner(id);
   }
