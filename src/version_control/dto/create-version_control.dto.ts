@@ -4,10 +4,11 @@ import {
   IsOptional,
   ValidateNested,
   IsNumber,
+  IsObject,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class IOSDto {
+export class IOSDto {
   @IsNotEmpty()
   @IsString()
   title: string;
@@ -29,7 +30,7 @@ class IOSDto {
   appStoreLink: string;
 }
 
-class AndroidDto {
+export class AndroidDto {
   @IsNotEmpty()
   @IsString()
   title: string;
@@ -53,11 +54,13 @@ class AndroidDto {
 
 export class CreateVersionControlDto {
   @IsOptional()
+  @IsObject()
   @ValidateNested()
   @Type(() => IOSDto)
   ios?: IOSDto;
 
   @IsOptional()
+  @IsObject()
   @ValidateNested()
   @Type(() => AndroidDto)
   android?: AndroidDto;

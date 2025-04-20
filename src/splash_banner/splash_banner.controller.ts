@@ -1,46 +1,100 @@
 import {
   Controller,
   Post,
-  UseInterceptors,
+  Body,
   UploadedFile,
+  UseInterceptors,
   Get,
   Param,
-  Patch,
   Delete,
+  Patch,
+  UploadedFiles,
+  HttpException,
+  HttpStatus, Query,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { SplashBannerService } from './splash_banner.service';
-import * as multer from 'multer';
+import {
+  BannerType,
+  CreateSplashBannerDto,
+} from './dto/create-splash_banner.dto';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
-@Controller('splash-banner')
+@Controller('splash-banners')
 export class SplashBannerController {
   constructor(private readonly splashBannerService: SplashBannerService) {}
 
-  @Post('upload')
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-  @UseInterceptors(FileInterceptor('file', { storage: multer.memoryStorage() })) // Multer handles file uploads
-  async create(@UploadedFile() file: { buffer: Buffer; mimetype: string }) {
-    return this.splashBannerService.createBanner(file);
-  }
-  @Get()
-  findAll() {
-    return this.splashBannerService.getBanners();
-  }
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.splashBannerService.getBanner(id);
-  }
-  @Patch('update/:id')
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-  @UseInterceptors(FileInterceptor('file', { storage: multer.memoryStorage() }))
-  async update(
-    @Param('id') id: string,
-    @UploadedFile() file: { buffer: Buffer; mimetype: string },
+  @Post()
+  @UseInterceptors(FilesInterceptor('images')) // handle multiple or single depending on type
+  async createBanner(
+    @Body() createSplashBannerDto: CreateSplashBannerDto,
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
-    return this.splashBannerService.updateBanner(id, file);
+    const { type } = createSplashBannerDto;
+
+    if (type === BannerType.TEXT && files?.length) {
+      throw new HttpException(
+        'Image upload is not allowed for text_banner type',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (
+      [BannerType.SPLASH, BannerType.PLAYER].includes(type) &&
+      files?.length
+    ) {
+      // Only take one image
+      const file = files[0];
+      createSplashBannerDto.image = [
+        `data:${file.mimetype};base64,${file.buffer.toString('base64')}`,
+      ];
+    }
+
+    if (type === BannerType.HOME && files?.length) {
+      // Accept multiple images
+      createSplashBannerDto.image = files.map(
+        (file) =>
+          `data:${file.mimetype};base64,${file.buffer.toString('base64')}`,
+      );
+    }
+
+    // text_banner skips image
+
+    return this.splashBannerService.createBanner(createSplashBannerDto);
   }
+
+  @Get()
+  getBanners(@Query('type') type?: string) {
+    return this.splashBannerService.getBanners(type);
+  }
+
+  // @Get(':id')
+  // getBanner(@Param('id') id: string) {
+  //   return this.splashBannerService.getBanner(id);
+  // }
+
+  @Patch(':id')
+  @UseInterceptors(FileInterceptor('image'))
+  updateBanner(
+    @Param('id') id: string,
+    @Body() createSplashBannerDto: CreateSplashBannerDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const typesRequiringImage = [
+      'splash_banner',
+      'home_banner',
+      'player_banner',
+    ];
+
+    if (typesRequiringImage.includes(createSplashBannerDto.type) && file) {
+      const base64Image = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+      createSplashBannerDto.image = [base64Image];
+    }
+
+    return this.splashBannerService.updateBanner(id, createSplashBannerDto);
+  }
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  deleteBanner(@Param('id') id: string) {
     return this.splashBannerService.deleteBanner(id);
   }
 }

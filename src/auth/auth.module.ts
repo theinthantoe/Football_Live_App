@@ -4,10 +4,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from 'src/auth/auth.service';
 import { AuthController } from 'src/auth/auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AdminModule } from 'src/admin/admin.module';
 
 @Module({
   imports: [
     UsersModule,
+    AdminModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

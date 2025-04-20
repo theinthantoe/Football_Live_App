@@ -6,6 +6,7 @@ import { MembershipModule } from 'src/membersip/membership.module';
 import { SplashBannerModule } from './splash_banner/splash_banner.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    AdminModule,
   ],
   controllers: [],
   providers: [],

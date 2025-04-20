@@ -7,61 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-type MembershipFacebook {
-  icon String
-  link String
-}
-
-type MembershipMessenger {
-  icon String
-  link String
-}
-
-type MembershipTelegram {
-  icon String
-  link String
-}
-
-type MembershipViber {
-  icon String
-  link String
-}
-
-type VersionControlAndroid {
-  buildNumber   Int
-  playStoreLink String
-  slogan        String
-  title         String
-  version       String
-}
-
-type VersionControlIos {
-  appStoreLink String
-  buildNumber  Int
-  slogan       String
-  title        String
-  version      String
-}
-
 model Membership {
   id        String              @id @default(auto()) @map("_id") @db.ObjectId
-  facebook  MembershipFacebook
-  messenger MembershipMessenger
+  facebook  Json?
+  messenger Json?
   slogan    String
-  telegram  MembershipTelegram
+  telegram  Json?
   title     String
-  viber     MembershipViber
+  viber     Json?
 }
 
 model SplashBanner {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  image String
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  type     String
+  image    Json?    // Array of strings
+  text     String?
+  duration String?
 }
+
 
 model VersionControl {
   id      String                @id @default(auto()) @map("_id") @db.ObjectId
-  android VersionControlAndroid
-  ios     VersionControlIos
+  android Json
+  ios     Json
 }
 
 model User{
@@ -70,11 +38,17 @@ model User{
   email  String @unique
   phoneNumber Int
   password String
+  IsMember Int @default(0)
 }
 model  Admin {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
-  email String
+  email String @unique
   password String
+  role     Role
+}
 
+enum Role {
+  admin
+  staff
 }

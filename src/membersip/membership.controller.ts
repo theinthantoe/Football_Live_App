@@ -1,13 +1,44 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { MembershipService } from 'src/membersip/membership.service';
-import { CreateMemberDto } from 'src/membersip/dto/CreateMember.dto';
+import {
+  Controller,
+  Post,
+  UploadedFiles,
+  Body,
+  UseInterceptors,
+  Patch,
+  Param, Delete, Get,
+} from '@nestjs/common';
+import { MembershipService } from './membership.service';
+import { CreateMemberDto } from './dto/CreateMember.dto';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
+import { UpdateMemberDto } from 'src/membersip/dto/UpdateMember.dto';
 
 @Controller('membership')
 export class MembershipController {
   constructor(private readonly membershipService: MembershipService) {}
+
   @Post()
-  createMember(@Body() data: CreateMemberDto) {
-    console.log('hello');
-    return this.membershipService.createMembership(data);
+  @UseInterceptors(AnyFilesInterceptor())
+  create(
+    @Body() dto: CreateMemberDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    return this.membershipService.createMembership(dto, files);
+  }
+  @Get()
+  findMany(){
+    return this.membershipService.findMany();
+  }
+  @Patch(':id')
+  update(
+    @Body() dto: UpdateMemberDto,
+    @Param('id') id: string,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    return this.membershipService.updateMembership(id, dto, files);
+  }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.membershipService.deleteMembership(id);
   }
 }
