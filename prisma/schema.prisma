@@ -9,8 +9,6 @@ datasource db {
 
 model Membership {
   id        String              @id @default(auto()) @map("_id") @db.ObjectId
-  facebook  Json?
-  messenger Json?
   slogan    String
   telegram  Json?
   title     String
@@ -19,7 +17,7 @@ model Membership {
 
 model SplashBanner {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  type     String
+  type     String?
   image    Json?    // Array of strings
   text     String?
   duration String?
@@ -35,8 +33,7 @@ model VersionControl {
 model User{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   username String
-  email  String @unique
-  phoneNumber Int
+  phoneNumber String @unique
   password String
   IsMember Int @default(0)
 }

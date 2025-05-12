@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { CreateAdminDto } from './dto/create-admin.dto';
+import { ChangePasswordDto, CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 
 @Controller('admin')
@@ -38,5 +38,12 @@ export class AdminController {
   @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.adminService.delete(id);
+  }
+  @Patch('change-password/:id')
+  changePasswrod(
+    @Param('id') id: string,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ) {
+    return this.adminService.changePassword(id, changePasswordDto);
   }
 }

@@ -7,8 +7,8 @@ export class AuthController {
   constructor(private authService: AuthService) {}
   @Post('user/sign-in')
   @HttpCode(HttpStatus.OK)
-  singIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.email, signInDto.password);
+  singIn(@Body() body: { phoneNumber: string; password: string }) {
+    return this.authService.signIn(body.phoneNumber, body.password);
   }
   @Post('admin/sign-in')
   @HttpCode(HttpStatus.OK)

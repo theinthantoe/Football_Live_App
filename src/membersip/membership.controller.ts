@@ -5,7 +5,9 @@ import {
   Body,
   UseInterceptors,
   Patch,
-  Param, Delete, Get,
+  Param,
+  Delete,
+  Get,
 } from '@nestjs/common';
 import { MembershipService } from './membership.service';
 import { CreateMemberDto } from './dto/CreateMember.dto';
@@ -26,10 +28,11 @@ export class MembershipController {
     return this.membershipService.createMembership(dto, files);
   }
   @Get('list')
-  findMany(){
+  findMany() {
     return this.membershipService.findMany();
   }
   @Patch('update/:id')
+  @UseInterceptors(AnyFilesInterceptor())
   update(
     @Body() dto: UpdateMemberDto,
     @Param('id') id: string,

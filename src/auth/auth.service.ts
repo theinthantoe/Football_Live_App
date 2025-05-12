@@ -11,11 +11,11 @@ export class AuthService {
     private AdminService: AdminService,
     private jwtService: JwtService,
   ) {}
-  async signIn(email: string, password: string) {
-    const response = await this.UsersService.findByemail(email);
+  async signIn(phoneNumber: string, password: string) {
+    const response = await this.UsersService.findByemail(phoneNumber);
     const user = response.data;
     if (user && (await bcrypt.compare(password, user.password))) {
-      const payload = { email: user.email, sub: user.id };
+      const payload = { phoneNumber: user.phoneNumber, id: user.id };
       return {
         status: HttpStatus.OK,
         access_token: this.jwtService.sign(payload),
@@ -28,7 +28,7 @@ export class AuthService {
     const response = await this.AdminService.findByemail(email);
     const user = response.data;
     if (user && (await bcrypt.compare(password, user.password))) {
-      const payload = { email: user.email, sub: user.id, role: user.role };
+      const payload = { email: user.email, sub: user.id,name: user.name, role: user.role };
       return {
         status: HttpStatus.OK,
         access_token: this.jwtService.sign(payload),

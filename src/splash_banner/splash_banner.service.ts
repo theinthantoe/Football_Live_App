@@ -23,9 +23,18 @@ export class SplashBannerService {
 
   async getBanners(type?: string) {
     const data = await this.prisma.splashBanner.findMany({
-      //@ts-ignore
-      where: { type },
+      where: type ? { type } : {}, // ✅ empty filter returns all
     });
+
+    return {
+      status: HttpStatus.OK,
+      message: Messages.getAll,
+      data,
+    };
+  }
+
+  async getBannersForPanel() {
+    const data = await this.prisma.splashBanner.findMany({});
     return {
       status: HttpStatus.OK,
       message: Messages.getAll,

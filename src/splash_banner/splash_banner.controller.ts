@@ -67,6 +67,11 @@ export class SplashBannerController {
     return this.splashBannerService.getBanners(type);
   }
 
+  @Get('list/panel')
+  getBannersForPanel() {
+    return this.splashBannerService.getBannersForPanel();
+  }
+
   // @Get(':id')
   // getBanner(@Param('id') id: string) {
   //   return this.splashBannerService.getBanner(id);

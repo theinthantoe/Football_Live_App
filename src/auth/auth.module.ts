@@ -15,7 +15,7 @@ import { AdminModule } from 'src/admin/admin.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET', 'default_secret'), // ✅ Uses fallback value
-        signOptions: { expiresIn: '1h' },
+        signOptions: { expiresIn: '1m' },
       }),
     }),
   ],

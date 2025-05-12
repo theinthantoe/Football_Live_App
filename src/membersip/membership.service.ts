@@ -48,8 +48,6 @@ export class MembershipService {
       slogan: rawDto.slogan,
       telegram: this.tryParseJson<SocialMedia>(rawDto.telegram),
       viber: this.tryParseJson<SocialMedia>(rawDto.viber),
-      messenger: this.tryParseJson<SocialMedia>(rawDto.messenger),
-      facebook: this.tryParseJson<SocialMedia>(rawDto.facebook),
     };
 
     const membership = await this.databaseService.membership.create({
@@ -58,8 +56,6 @@ export class MembershipService {
         slogan: dto.slogan,
         telegram: this.buildSocialBlock(files, 'telegram', rawDto.telegram),
         viber: this.buildSocialBlock(files, 'viber', rawDto.viber),
-        messenger: this.buildSocialBlock(files, 'messenger', rawDto.messenger),
-        facebook: this.buildSocialBlock(files, 'facebook', rawDto.facebook),
       },
     });
 
@@ -112,18 +108,6 @@ export class MembershipService {
         'viber',
         rawDto.viber,
         existing.viber as SocialMedia | null,
-      ),
-      messenger: this.buildSocialBlock(
-        files,
-        'messenger',
-        rawDto.messenger,
-        existing.messenger as SocialMedia | null,
-      ),
-      facebook: this.buildSocialBlock(
-        files,
-        'facebook',
-        rawDto.facebook,
-        existing.facebook as SocialMedia | null,
       ),
     };
 

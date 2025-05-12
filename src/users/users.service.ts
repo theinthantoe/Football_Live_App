@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
-import { CreateUserDto } from 'src/users/dto/CreateUser.dto';
+import { ChangePasswordByAdminDto, CreateUserDto } from 'src/users/dto/CreateUser.dto';
 import Messages from 'src/utils/message';
 import { UpdateUserDto } from 'src/users/dto/UpdateUser.dto';
 import * as bcrypt from 'bcrypt';
@@ -28,15 +28,30 @@ export class UsersService {
       );
     }
   }
-  async find() {
+  async find(query: any) {
     try {
-      const data = await this.databaseService.user.findMany();
+      const filters: any = {};
+
+      if (query.phoneNumber) {
+        filters.phoneNumber = String(query.phoneNumber); // force string
+      }
+
+      if (query.name) {
+        filters.name = {
+          contains: query.name,
+          mode: 'insensitive',
+        };
+      }
+
+      const data = await this.databaseService.user.findMany({
+        where: filters,
+      });
+
       return {
         status: HttpStatus.OK,
         message: Messages.getAll,
         data,
       };
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       throw new HttpException(
         Messages.internalError,
@@ -44,6 +59,7 @@ export class UsersService {
       );
     }
   }
+
   async findOne(id: string) {
     try {
       const data = await this.databaseService.user.findUnique({
@@ -62,10 +78,10 @@ export class UsersService {
       );
     }
   }
-  async findByemail(email: string) {
+  async findByemail(phoneNumber: string) {
     try {
       const data = await this.databaseService.user.findUnique({
-        where: { email },
+        where: { phoneNumber },
       });
       return {
         status: HttpStatus.OK,
@@ -110,6 +126,31 @@ export class UsersService {
         data: data,
       };
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      throw new HttpException(
+        Messages.internalError,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+  async changePasswordByAdmin(id: string, body: ChangePasswordByAdminDto) {
+    const { newPassword, confirmPassword } = body;
+
+    if (newPassword !== confirmPassword) {
+      throw new HttpException('Passwords do not match', HttpStatus.BAD_REQUEST);
+    }
+
+    try {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const data = await this.databaseService.user.update({
+        where: { id },
+        data: { password: hashedPassword },
+      });
+      return {
+        status: HttpStatus.OK,
+        message: 'Password updated successfully',
+        data,
+      };
     } catch (error) {
       throw new HttpException(
         Messages.internalError,

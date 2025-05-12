@@ -17,3 +17,14 @@ export class CreateAdminDto {
   @IsEnum(RoleType)
   role: RoleType;
 }
+export class ChangePasswordDto {
+  @IsString()
+  currentPassword: string;
+
+  @IsString()
+  // @MinLength(8, { message: 'New password must be at least 8 characters long' })
+  newPassword: string;
+
+  @IsString()
+  confirmPassword: string;
+}

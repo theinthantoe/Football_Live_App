@@ -44,15 +44,5 @@ export class CreateMemberDto {
   @ParseJsonToClass(SocialMedia)
   viber?: SocialMedia;
 
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => SocialMedia)
-  @ParseJsonToClass(SocialMedia)
-  messenger?: SocialMedia;
 
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => SocialMedia)
-  @ParseJsonToClass(SocialMedia)
-  facebook?: SocialMedia;
 }
